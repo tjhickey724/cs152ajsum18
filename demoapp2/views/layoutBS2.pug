@@ -8,13 +8,17 @@ html(lang="en")
     link(rel='stylesheet', href='/stylesheets/style.css')
     block head
   body
-    ul.nav.nav-pills.nav-fill
-        li.nav-item
-          a.nav-link.active(href="/") Home
-        li.nav-item
-          a.nav-link.active(href="/cssdemo") CSSdemo
-        li.nav-item
-          a.nav-link.active(href="/imagedemo") ImageDemo
+  nav.navabar.navbar-expand-lg.navbar-light.bg-light
+  a.navbar-brand(href="#") NavBar
+  button.navbar-toggler(type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation")
+    .span.navbar-toggler-icon
+  .collapse.navbar-collapse#navbarSupportedContent
+  ul.navbar-bav.mr-auto
+    li.nav-item.active
+      a.nav-link(href="#") home
+        span.sr-only (current)
+
+
     block content
     script(src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous")
     script(src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous")
