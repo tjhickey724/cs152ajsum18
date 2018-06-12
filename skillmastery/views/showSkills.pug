@@ -4,6 +4,7 @@ block content
   h1 Skill List
   h2 There are currently #{skills.length} skills
   p This page has been visited #{counter} times since last reset
+  a(href="/skills/square") Try the Square app
   ol
     each val in skills
       li #{val.name} --

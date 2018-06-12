@@ -4,10 +4,13 @@ block content
   .jumbotron
     h1 Square
     p Dazzling Mathematics!!
-  form(method="post") 
+  form(method="post",action="/skills/square")
     input(type="text" name="x")
     br
     input(type="submit")
   hr
   p
     | The square of #{x} is #{square}
+  ol
+    each s in squares
+      li The square of #{s.x} is #{s.s}
