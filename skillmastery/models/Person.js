@@ -9,4 +9,8 @@ class Person{
   }
 }
 
+function printName(p){
+  console.log("name="+p.name)
+}
+
 module.exports = Person

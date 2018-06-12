@@ -14,6 +14,7 @@ let database = JSON.parse(rawdata);
 let counter = 0
 console.log("loading skills router!!!")
 
+let squares = []
 
 /* GET home page. */
 router.get('/raw', function(req, res, next) {
@@ -21,6 +22,20 @@ router.get('/raw', function(req, res, next) {
   res.send(database)
 });
 
+router.get('/test',function(req,res,next){
+  res.send("hello!")
+})
+
+router.get('/square',function(req, res, next){
+  res.render('square',{x:0,square:0,squares:[]})
+})
+
+router.post('/square',function(req, res, next){
+  const x = parseInt(req.body.x )
+  const square = x*x
+  squares.push(x)
+  res.render('square',{x:x,square:square,squares:squares})
+})
 
 router.get('/show', function(req, res, next) {
   //res.render('index', { title: 'Express' });
