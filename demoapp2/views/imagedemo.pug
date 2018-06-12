@@ -1,0 +1,20 @@
+extends layoutBS
+
+block content
+  h1 Image Demo
+  p Lets put three images here!!!
+  img(src="/images/puppy.jpg" width="10%")
+  img(src="/images/kitten.jpg" width="10%")
+  .container
+    .row
+      .blue.col-sm-4
+        img(src="/images/puppy.jpg" width="100%")
+      .red.col-sm-4
+        img(src="/images/puppy.jpg" width="100%")
+      .green.col-sm-4
+        img(src="/images/puppy.jpg" width="100%")
+    .row
+      .blue.col-sm-8
+        img(src="/images/kitten.jpg" width="100%")
+      .red.col-sm-4
+        img(src="/images/puppy.jpg" width="100%")
