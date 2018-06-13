@@ -4,8 +4,6 @@ const
  path = require('path'),
  cookieParser = require('cookie-parser'),
  logger = require('morgan'),
- indexRouter = require('./routes/index'),
- usersRouter = require('./routes/users'),
  skillsController = require('./controllers/skillsController')
 // skillsRouter = require('./routes/skills'),
  mongoose = require( 'mongoose' );
@@ -30,19 +28,26 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-//
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+// here is where the routing happens, we're not using Routers
+// as the app is still quite small...
 
-//app.use('/skills',skillsRouter);
-app.get( '/skills', skillsController.getAllSkills );
-app.post( '/saveSkill', skillsController.saveSkill );
+
+console.log('dropping into the skills routes')
+app.get('/skills', skillsController.getAllSkills );
+console.log("A")
+app.post('/saveSkill', skillsController.saveSkill );
+console.log("B")
+
+app.use('/', function(req, res, next) {
+  console.log("in / controller")
+  res.render('index', { title: 'Skills Mastery App' });
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
 });
-
+console.log("C")
 // error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
@@ -53,5 +58,6 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+console.log("D")
 
 module.exports = app;

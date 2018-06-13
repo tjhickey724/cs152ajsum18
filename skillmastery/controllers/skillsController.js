@@ -1,10 +1,11 @@
 'use strict';
 const Skill = require( '../models/skill' );
-
+console.log("loading the skills Controller")
 
 
 // this displays all of the skills
 exports.getAllSkills = ( req, res ) => {
+  console.log('in getAllSkills')
   Skill.find( {} )
     .exec()
     .then( ( skills ) => {
