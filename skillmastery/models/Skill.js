@@ -1,12 +1,9 @@
-class Skill{
-  constructor(name,description){
-    this.name=name
-    this.description=description
-  }
+'use strict';
+const mongoose = require( 'mongoose' );
 
-  toString(){
-    return `Skill(${this.name},${this.description})`
-  }
-}
+var skillSchema = mongoose.Schema( {
+  name: String,
+  description: String
+} );
 
-module.exports = Skill
+module.exports = mongoose.model( 'Skill', skillSchema );
