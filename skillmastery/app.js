@@ -12,6 +12,11 @@ var app = express();
 
 // here is where we connect to the database!
 mongoose.connect( 'mongodb://localhost/skillmastery' );
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+  console.log("we are connected!")
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
