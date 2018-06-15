@@ -9,7 +9,6 @@ exports.getAllSkills = ( req, res ) => {
   Skill.find( {} )
     .exec()
     .then( ( skills ) => {
-      console.log("skills = "+skills)
       res.render( 'skills', {
         skills: skills
       } );
@@ -43,4 +42,27 @@ exports.saveSkill = ( req, res ) => {
     .catch( error => {
       res.send( error );
     } );
+};
+
+exports.deleteSkill = (req, res) => {
+  console.log("in deleteSkill")
+  let skillName = req.body.deleteName
+  if (typeof(skillName)=='string') {
+      Skill.deleteOne({name:skillName})
+           .exec()
+           .then(()=>{res.redirect('/skills')})
+           .catch((error)=>{res.send(error)})
+  } else if (typeof(skillName)=='object'){
+      Skill.deleteMany({name:{$in:skillName}})
+           .exec()
+           .then(()=>{res.redirect('/skills')})
+           .catch((error)=>{res.send(error)})
+  } else if (typeof(skillName)=='undefined'){
+      console.log("This is if they didn't select a skill")
+      res.redirect('/skills')
+  } else {
+    console.log("This shouldn't happen!")
+    res.send(`unknown skillName: ${skillName}`)
+  }
+
 };

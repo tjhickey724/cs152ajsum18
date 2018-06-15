@@ -12,9 +12,12 @@ block content
     input(type="submit")
   hr
   h1 List of All Skills
-  ol
-    each skill in skills
-      li
-        e #{skill.name} -- 
-        i #{skill.description}
-  hr
+  form(method="post" action="deleteSkill")
+    ol
+      each skill in skills
+        li
+          input(name="deleteName" value=skill.name type="checkbox")
+          e #{skill.name} --
+          i #{skill.description}      
+    input(type="submit" value="Delete checked items")
+    hr
