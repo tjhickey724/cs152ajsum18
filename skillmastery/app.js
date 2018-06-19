@@ -11,9 +11,7 @@ const
  User = require( './models/user' ),
  flash = require('connect-flash')
 
-//var LocalStrategy    = require('passport-local').Strategy;
-//var FacebookStrategy = require('passport-facebook').Strategy;
-//var TwitterStrategy  = require('passport-twitter').Strategy;
+
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
  // here we set up authentication with passport
@@ -56,30 +54,29 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 
-
-
+// here are the authentication routes
 
 app.get('/loginerror', function(req,res){
   res.render('loginerror',{})
 })
+
 app.get('/login', function(req,res){
   res.render('login',{})
 })
 
+// we require them to be logged in to see their profile
 app.get('/profile', isLoggedIn, function(req, res) {
         res.render('profile', {
             user : req.user // get the user out of session and pass to template
         });
     });
 
-    // route for logging out
+// route for logging out
 app.get('/logout', function(req, res) {
         req.logout();
         res.redirect('/');
     });
 
-    // facebook routes
-    // twitter routes
 
     // =====================================
     // GOOGLE ROUTES =======================
@@ -116,9 +113,13 @@ function isLoggedIn(req, res, next) {
     res.redirect('/login');
 }
 
+
+// here are our regular app routes ...
+// we require them to be logged in to access the skills page
 app.get('/skills', isLoggedIn, skillsController.getAllSkills );
-app.post('/saveSkill', skillsController.saveSkill );
-app.post('/deleteSkill', skillsController.deleteSkill );
+app.post('/saveSkill', isLoggedIn, skillsController.saveSkill );
+app.post('/deleteSkill', isLoggedIn, skillsController.deleteSkill );
+
 app.use('/', function(req, res, next) {
   console.log("in / controller")
   res.render('index', { title: 'Skills Mastery App' });
