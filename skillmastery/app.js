@@ -4,8 +4,24 @@ const
  path = require('path'),
  cookieParser = require('cookie-parser'),
  logger = require('morgan'),
- skillsController = require('./controllers/skillsController')
- const  studentsController = require('./controllers/studentsController')
+ skillsController = require('./controllers/skillsController'),
+ evidenceController = require('./controllers/evidenceController'),
+ studentsController = require('./controllers/studentsController'),
+ session = require("express-session"),
+ bodyParser = require("body-parser"),
+ User = require( './models/user' ),
+ flash = require('connect-flash')
+
+
+var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+
+ // here we set up authentication with passport
+ const passport = require('passport')
+ const configPassport = require('./config/passport')
+ configPassport(passport)
+
+
+var app = express();
 
 // skillsRouter = require('./routes/skills'),
 const mongoose = require( 'mongoose' );
@@ -30,26 +46,101 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.get('/skills',skillRouter)
+app.use(session({ secret: 'zzbbyanana' }));
+app.use(flash());
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // this handles all static routes ...
 // so don't name your routes so they conflict with the public folders
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-// here is where the routing happens, we're not using Routers
-// as the app is still quite small...
 
 
+/*
 app.get('/skills', skillsController.getAllSkills );
 app.post('/saveSkill', skillsController.saveSkill );
 app.post('/deleteSkill', skillsController.deleteSkill );
 app.get('/students', studentsController.getAllStudents );
+*/
+// here are the authentication routes
+
+app.get('/loginerror', function(req,res){
+  res.render('loginerror',{})
+})
+
+app.get('/login', function(req,res){
+  res.render('login',{})
+})
+
+// we require them to be logged in to see their profile
+app.get('/profile', isLoggedIn, function(req, res) {
+        res.render('profile', {
+            user : req.user // get the user out of session and pass to template
+        });
+    });
+
+// route for logging out
+app.get('/logout', function(req, res) {
+        req.logout();
+        res.redirect('/');
+    });
+
+
+    // =====================================
+    // GOOGLE ROUTES =======================
+    // =====================================
+    // send to google to do the authentication
+    // profile gets us their basic information including their name
+    // email gets their emails
+    app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
+
+    // the callback after google has authenticated the user
+    app.get('/auth/google/callback',
+            passport.authenticate('google', {
+                    successRedirect : '/profile',
+                    failureRedirect : '/loginerror'
+            }));
+
+    app.get('/login/authorized',
+            passport.authenticate('google', {
+                    successRedirect : '/profile',
+                    failureRedirect : '/loginerror'
+            }));
+
+// route middleware to make sure a user is logged in
+function isLoggedIn(req, res, next) {
+    console.log("checking to see if they are authenticated!")
+    // if user is authenticated in the session, carry on
+    if (req.isAuthenticated()){
+      console.log("user has been Authenticated")
+      return next();
+    }
+
+    console.log("user has not been authenticated...")
+    // if they aren't redirect them to the home page
+    res.redirect('/login');
+}
+
+
+// here are our regular app routes ...
+// we require them to be logged in to access the skills page
+app.get('/skills', isLoggedIn, skillsController.getAllSkills );
+app.post('/saveSkill', isLoggedIn, skillsController.saveSkill );
+app.post('/deleteSkill', isLoggedIn, skillsController.deleteSkill );
+
+
+app.get('/evidence', isLoggedIn, evidenceController.getAllEvidence );
+app.post('/saveEvidence', isLoggedIn, evidenceController.saveEvidence );
+app.post('/deleteEvidence', isLoggedIn, evidenceController.deleteEvidence );
 
 app.use('/', function(req, res, next) {
   console.log("in / controller")
   res.render('index', { title: 'Skills Mastery App' });
 });
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
