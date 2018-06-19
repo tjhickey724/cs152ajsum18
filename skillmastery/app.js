@@ -5,18 +5,21 @@ const
  cookieParser = require('cookie-parser'),
  logger = require('morgan'),
  skillsController = require('./controllers/skillsController')
+ const  studentsController = require('./controllers/studentsController')
+
 // skillsRouter = require('./routes/skills'),
- mongoose = require( 'mongoose' );
-
-var app = express();
-
-// here is where we connect to the database!
+const mongoose = require( 'mongoose' );
 mongoose.connect( 'mongodb://localhost/skillmastery' );
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
   console.log("we are connected!")
 });
+
+var app = express();
+
+// here is where we connect to the database!
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -27,6 +30,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.get('/skills',skillRouter)
 
 // this handles all static routes ...
 // so don't name your routes so they conflict with the public folders
@@ -40,6 +44,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/skills', skillsController.getAllSkills );
 app.post('/saveSkill', skillsController.saveSkill );
 app.post('/deleteSkill', skillsController.deleteSkill );
+app.get('/students', studentsController.getAllStudents );
 
 app.use('/', function(req, res, next) {
   console.log("in / controller")
