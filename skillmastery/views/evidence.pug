@@ -1,0 +1,33 @@
+extends layoutBS
+
+block content
+  h1 Add some evidence
+  | welcome #{user.googlename}
+  form(method="post" action="saveEvidence")
+    .formGroup
+      label student name
+      input(type="text" name="student" value=user.googleemail)
+    .formGroup
+      label skill
+      input(type="text" name="skill")
+    .formGroup
+      label link to evidence
+      input(type="text" name="url")
+    .formGroup
+      label description of how this link demonstrates the skill
+      textarea(name="description" rows="10" cols="80")
+    hr
+    input(type="submit")
+  hr
+  h1 List of All getAllEvidence
+  form(method="post" action="deleteEvidence")
+    ol
+      each e in evidence
+        li
+          input(name="evidenceID" value=e._id type="checkbox")
+          e #{e.student} --
+          e #{e.skill}
+          a(href=e.url) Link is #{e.url}
+          i #{e.description}      
+    input(type="submit" value="Delete checked items")
+    hr

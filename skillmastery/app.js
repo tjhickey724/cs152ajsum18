@@ -5,7 +5,8 @@ const
  cookieParser = require('cookie-parser'),
  logger = require('morgan'),
  skillsController = require('./controllers/skillsController'),
- mongoose = require( 'mongoose' ),
+ evidenceController = require('./controllers/evidenceController'),
+ studentsController = require('./controllers/studentsController'),
  session = require("express-session"),
  bodyParser = require("body-parser"),
  User = require( './models/user' ),
@@ -22,13 +23,19 @@ var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
 var app = express();
 
-// here is where we connect to the database!
+// skillsRouter = require('./routes/skills'),
+const mongoose = require( 'mongoose' );
 mongoose.connect( 'mongodb://localhost/skillmastery' );
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
   console.log("we are connected!")
 });
+
+var app = express();
+
+// here is where we connect to the database!
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -45,7 +52,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-
 // this handles all static routes ...
 // so don't name your routes so they conflict with the public folders
 app.use(express.static(path.join(__dirname, 'public')));
@@ -53,7 +59,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 
-
+/*
+app.get('/skills', skillsController.getAllSkills );
+app.post('/saveSkill', skillsController.saveSkill );
+app.post('/deleteSkill', skillsController.deleteSkill );
+app.get('/students', studentsController.getAllStudents );
+*/
 // here are the authentication routes
 
 app.get('/loginerror', function(req,res){
@@ -119,6 +130,11 @@ function isLoggedIn(req, res, next) {
 app.get('/skills', isLoggedIn, skillsController.getAllSkills );
 app.post('/saveSkill', isLoggedIn, skillsController.saveSkill );
 app.post('/deleteSkill', isLoggedIn, skillsController.deleteSkill );
+
+
+app.get('/evidence', isLoggedIn, evidenceController.getAllEvidence );
+app.post('/saveEvidence', isLoggedIn, evidenceController.saveEvidence );
+app.post('/deleteEvidence', isLoggedIn, evidenceController.deleteEvidence );
 
 app.use('/', function(req, res, next) {
   console.log("in / controller")

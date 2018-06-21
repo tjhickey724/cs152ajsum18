@@ -26,14 +26,14 @@ exports.getAllSkills = ( req, res ) => {
 
 
 exports.saveSkill = ( req, res ) => {
-  console.log("in saveSkill!")
-  console.dir(req)
+  //console.log("in saveSkill!")
+  //console.dir(req)
   let newSkill = new Skill( {
     name: req.body.name,
     description: req.body.description
   } )
 
-  console.log("skill = "+newSkill)
+  //console.log("skill = "+newSkill)
 
   newSkill.save()
     .then( () => {
