@@ -1,0 +1,21 @@
+extends layoutBS
+
+block content
+
+  h1 Evidence Review
+  | for #{e.skill}
+  br
+  | by #{e.student}
+  br
+  | Link:
+  a(href=e.url) #{e.url}
+  hr
+  h3 Student explanation of evidence
+  | #{e.description}
+  hr
+  | Enter your Review of their evidence:
+  | this part needs to be written!
+  br
+  textarea(rows="10" cols="80")
+  hr
+  button.btn.btn-large.btn-danger Submit Review

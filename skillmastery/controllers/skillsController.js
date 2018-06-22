@@ -23,6 +23,24 @@ exports.getAllSkills = ( req, res ) => {
 };
 
 
+exports.attachSkills = ( req, res, next ) => {
+  console.log('in attachSkills')
+  Skill.find( {} )
+    .exec()
+    .then( ( skills ) => {
+      res.locals.skills = skills
+      console.dir(res.locals)
+      next()
+    } )
+    .catch( ( error ) => {
+      console.log( error.message );
+      return [];
+    } )
+    .then( () => {
+      console.log( 'skill promise complete' );
+    } );
+};
+
 
 
 exports.saveSkill = ( req, res ) => {

@@ -7,6 +7,7 @@ const
  skillsController = require('./controllers/skillsController'),
  evidenceController = require('./controllers/evidenceController'),
  studentsController = require('./controllers/studentsController'),
+ usersController = require('./controllers/usersController'),
  session = require("express-session"),
  bodyParser = require("body-parser"),
  User = require( './models/user' ),
@@ -56,15 +57,28 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // so don't name your routes so they conflict with the public folders
 app.use(express.static(path.join(__dirname, 'public')));
 
+// here is where we check on their logged in status
+app.use((req,res,next) => {
+  res.locals.loggedIn = false
+  if (req.isAuthenticated()){
+    console.log("user has been Authenticated")
+    res.locals.user = req.user
+    res.locals.loggedIn = true
+    if (req.user){
+      if (req.user.googleemail=='tjhickey@brandeis.edu'){
+        console.log("Owner has logged in")
+        res.locals.status = 'teacher'
+      } else {
+        console.log('student has logged in')
+        res.locals.status = 'student'
+      }
+    }
+  }
+  next()
+})
 
 
 
-/*
-app.get('/skills', skillsController.getAllSkills );
-app.post('/saveSkill', skillsController.saveSkill );
-app.post('/deleteSkill', skillsController.deleteSkill );
-app.get('/students', studentsController.getAllStudents );
-*/
 // here are the authentication routes
 
 app.get('/loginerror', function(req,res){
@@ -75,12 +89,7 @@ app.get('/login', function(req,res){
   res.render('login',{})
 })
 
-// we require them to be logged in to see their profile
-app.get('/profile', isLoggedIn, function(req, res) {
-        res.render('profile', {
-            user : req.user // get the user out of session and pass to template
-        });
-    });
+
 
 // route for logging out
 app.get('/logout', function(req, res) {
@@ -89,52 +98,63 @@ app.get('/logout', function(req, res) {
     });
 
 
-    // =====================================
-    // GOOGLE ROUTES =======================
-    // =====================================
-    // send to google to do the authentication
-    // profile gets us their basic information including their name
-    // email gets their emails
-    app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
+// =====================================
+// GOOGLE ROUTES =======================
+// =====================================
+// send to google to do the authentication
+// profile gets us their basic information including their name
+// email gets their emails
+app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
 
-    // the callback after google has authenticated the user
-    app.get('/auth/google/callback',
-            passport.authenticate('google', {
-                    successRedirect : '/profile',
-                    failureRedirect : '/loginerror'
-            }));
 
-    app.get('/login/authorized',
-            passport.authenticate('google', {
-                    successRedirect : '/profile',
-                    failureRedirect : '/loginerror'
-            }));
+app.get('/login/authorized',
+        passport.authenticate('google', {
+                successRedirect : '/',
+                failureRedirect : '/loginerror'
+        }));
 
 // route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {
     console.log("checking to see if they are authenticated!")
     // if user is authenticated in the session, carry on
+    res.locals.loggedIn = false
     if (req.isAuthenticated()){
       console.log("user has been Authenticated")
       return next();
+    } else {
+      console.log("user has not been authenticated...")
+      res.redirect('/login');
     }
-
-    console.log("user has not been authenticated...")
-    // if they aren't redirect them to the home page
-    res.redirect('/login');
 }
 
+// we require them to be logged in to see their profile
+app.get('/profile', isLoggedIn, function(req, res) {
+        res.render('profile', {
+            user : req.user // get the user out of session and pass to template
+        });
+    });
 
 // here are our regular app routes ...
 // we require them to be logged in to access the skills page
-app.get('/skills', isLoggedIn, skillsController.getAllSkills );
+app.get('/skills', skillsController.getAllSkills );
 app.post('/saveSkill', isLoggedIn, skillsController.saveSkill );
 app.post('/deleteSkill', isLoggedIn, skillsController.deleteSkill );
 
 
-app.get('/evidence', isLoggedIn, evidenceController.getAllEvidence );
+app.get('/evidence',
+         skillsController.attachSkills,
+         evidenceController.getAllEvidence );
+ app.get('/evidenceItem/:id',
+          evidenceController.getEvidenceItem );
 app.post('/saveEvidence', isLoggedIn, evidenceController.saveEvidence );
 app.post('/deleteEvidence', isLoggedIn, evidenceController.deleteEvidence );
+
+app.get('/users',usersController.getAllUsers)
+app.get('/users/:id',
+        usersController.attachUser,
+        evidenceController.attachEvidence,
+        usersController.getUser)
+
 
 app.use('/', function(req, res, next) {
   console.log("in / controller")

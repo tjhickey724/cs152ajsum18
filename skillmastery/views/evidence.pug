@@ -1,20 +1,25 @@
 extends layoutBS
 
 block content
-  h1 Add some evidence
-  | welcome #{user.googlename}
+
+  h1 welcome #{user.googlename}
+  h2 Add some evidence
+
   form(method="post" action="saveEvidence")
     .formGroup
       label student name
-      input(type="text" name="student" value=user.googleemail)
+      input(type="text" name="student" readonly="true" value=user.googleemail)
     .formGroup
       label skill
-      input(type="text" name="skill")
+      select(name="skill")
+        each s in skills
+          option #{s.name}
     .formGroup
       label link to evidence
       input(type="text" name="url")
     .formGroup
       label description of how this link demonstrates the skill
+      br
       textarea(name="description" rows="10" cols="80")
     hr
     input(type="submit")
@@ -28,6 +33,6 @@ block content
           e #{e.student} --
           e #{e.skill}
           a(href=e.url) Link is #{e.url}
-          i #{e.description}      
+          i #{e.description}
     input(type="submit" value="Delete checked items")
     hr

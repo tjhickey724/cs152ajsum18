@@ -1,17 +1,18 @@
 'use strict';
 const Evidence = require( '../models/evidence' );
+var mongo = require('mongodb');
 console.log("loading the Evidence Controller")
 
 
 // this displays all of the skills
 exports.getAllEvidence = ( req, res ) => {
   console.log('in getAllEvidence')
-  Evidence.find( {} )
+  Evidence.find( {student:req.user.googleemail} )
     .exec()
     .then( ( evidence ) => {
       res.render( 'evidence', {
         evidence: evidence,
-        user:req.user
+        user:req.user,
       } );
     } )
     .catch( ( error ) => {
@@ -20,6 +21,41 @@ exports.getAllEvidence = ( req, res ) => {
     } )
     .then( () => {
       console.log( 'evidence promise complete' );
+    } );
+};
+
+
+exports.attachEvidence = ( req, res, next ) => {
+  console.log('in attachEvidence')
+  Evidence.find( {student:res.locals.user.googleemail} )
+    .exec()
+    .then( ( evidence ) => {
+      res.locals.evidence = evidence
+      next()
+    } )
+    .catch( ( error ) => {
+      console.log( error.message );
+      return [];
+    } )
+    .then( () => {
+      console.log( 'attachEvidence promise complete' );
+    } );
+};
+
+exports.getEvidenceItem = ( req, res, next ) => {
+  console.log('in getEvidenceItem')
+  const objId = new mongo.ObjectId(req.params.id)
+  Evidence.findOne(objId) //{"_id": objId})
+    .exec()
+    .then( ( evidence ) => {
+      res.render('evidenceItem',{e:evidence})
+    } )
+    .catch( ( error ) => {
+      console.log( error.message );
+      return [];
+    } )
+    .then( () => {
+      console.log( 'attachOneEvidence promise complete' );
     } );
 };
 

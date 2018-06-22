@@ -4,6 +4,12 @@ block content
   .jumbotron
     h1 SkillMastery
     p Evidence-based Grading!
-
-    a.btn.btn-danger(href="/auth/google")
-      span.fa.fa-google-plus  Google
+    //-
+      a.btn.btn-danger(href="/auth/google")
+        span.fa.fa-google-plus  Google
+      br
+      | logged in "#{loggedIn}"
+      br
+      | user: "#{(user&&user.googlename)}"
+      br
+      || This should be in a comment!
