@@ -1,8 +1,9 @@
 extends layoutBS
 
 block content
-  h1= title
-  p Welcome to authDemo 
+  .jumbotron
+    h1 Welcome to authDemo 
+    p This apps shows how to authenticate
   | user=#{user}
   if loggedIn 
     p You are logged in 
