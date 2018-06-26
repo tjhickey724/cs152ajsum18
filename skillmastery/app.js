@@ -14,12 +14,12 @@ const
  flash = require('connect-flash')
 
 
-var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+ var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
- // here we set up authentication with passport
- const passport = require('passport')
- const configPassport = require('./config/passport')
- configPassport(passport)
+  // here we set up authentication with passport
+  const passport = require('passport')
+  const configPassport = require('./config/passport')
+  configPassport(passport)
 
 
 var app = express();
@@ -111,7 +111,9 @@ app.get('/login/authorized',
         passport.authenticate('google', {
                 successRedirect : '/',
                 failureRedirect : '/loginerror'
-        }));
+        })
+      );
+
 
 // route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {
@@ -140,6 +142,8 @@ app.get('/skills', skillsController.getAllSkills );
 app.post('/saveSkill', isLoggedIn, skillsController.saveSkill );
 app.post('/deleteSkill', isLoggedIn, skillsController.deleteSkill );
 
+app.get('/evidenceItem/:id',
+         evidenceController.getEvidenceItem );
 
 app.get('/evidence',
          skillsController.attachSkills,
