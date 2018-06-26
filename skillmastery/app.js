@@ -144,7 +144,7 @@ app.post('/deleteSkill', isLoggedIn, skillsController.deleteSkill );
 app.get('/evidence',
          skillsController.attachSkills,
          evidenceController.getAllEvidence );
- app.get('/evidenceItem/:id',
+app.get('/evidenceItem/:id',
           evidenceController.getEvidenceItem );
 app.post('/saveEvidence', isLoggedIn, evidenceController.saveEvidence );
 app.post('/deleteEvidence', isLoggedIn, evidenceController.deleteEvidence );
