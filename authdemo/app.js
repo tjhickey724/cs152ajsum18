@@ -41,7 +41,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // *************************************
 // NEEDED FOR AUTHENTICATION ...
-app.use(session({ secret: 'zzbbyanana' })); 
+app.use(session({ secret: 'zzbbyanana' }));
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -101,6 +101,7 @@ function isLoggedIn(req, res, next) {
     // if user is authenticated in the session, carry on
     res.locals.loggedIn = false
     if (req.isAuthenticated()){
+      res.locals.loggedIn = true
       console.log("user has been Authenticated")
       return next();
     } else {

@@ -4,3 +4,4 @@ node_modules
 *.pdf
 external
 notes
+auth.js
