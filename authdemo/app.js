@@ -8,6 +8,9 @@ const session = require("express-session")
 const passport = require('passport')
 const configPassport = require('./config/passport')
 
+
+const swController = require('./controllers/swController.js')
+
 // add the mongoose package and initialized
 // this is need to keep track of the users ...
 mongoose.connect( 'mongodb://localhost/skillmastery' );
@@ -123,7 +126,8 @@ app.get('/', function(req, res, next) {
   res.render('index', { title: 'AuthDemo' });
 });
 
-
+app.get('/starwars',swController.attachFilms, swController.renderMain)
+app.get('/starwars/films/:k',swController.attachFilms, swController.renderFilm)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

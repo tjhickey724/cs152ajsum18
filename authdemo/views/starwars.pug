@@ -1,0 +1,11 @@
+extends layoutBS
+
+block content
+  .jumbotron
+    h1 StarWars!
+    p This provides info about the Star Wars movies
+
+    ul
+      each f,i in films
+        li 
+          a(href="starwars/films/"+i) #{f.title}
