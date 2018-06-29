@@ -3,10 +3,13 @@ const express = require('express')
 const path = require('path')
 const cookieParser = require('cookie-parser')
 const logger = require('morgan')
+const mongoose = require( 'mongoose' )
+const session = require("express-session")
+const passport = require('passport')
+const configPassport = require('./config/passport')
 
 // add the mongoose package and initialized
 // this is need to keep track of the users ...
-const mongoose = require( 'mongoose' );
 mongoose.connect( 'mongodb://localhost/skillmastery' );
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -14,16 +17,12 @@ db.once('open', function() {
   console.log("we are connected!")
 });
 
-
+/* ********************************************* */
 //NEW CODE FOR AUTHENTICATION ..
-const session = require("express-session")
-const passport = require('passport')
-const configPassport = require('./config/passport')
+
 configPassport(passport)
+/* ********************************************* */
 
-
-var indexRouter = require('./routes/index')
-var usersRouter = require('./routes/users')
 
 var app = express()
 
@@ -31,7 +30,12 @@ var app = express()
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'pug');
 
-//NEW CODE FOR AUTHENTICATION
+
+// Authentication must have these three middleware in this order!
+app.use(session({ secret: 'zzbbyanana' }));
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -39,11 +43,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// *************************************
-// NEEDED FOR AUTHENTICATION ...
-app.use(session({ secret: 'zzbbyanana' }));
-app.use(passport.initialize());
-app.use(passport.session());
 
 
 // NEXT ADD THE AUTHENTICATION ROUTES
@@ -120,8 +119,11 @@ app.get('/logout', function(req, res) {
 
 
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.get('/', function(req, res, next) {
+  res.render('index', { title: 'AuthDemo' });
+});
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

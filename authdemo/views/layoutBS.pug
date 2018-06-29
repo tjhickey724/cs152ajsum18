@@ -11,14 +11,7 @@ html(lang="en")
     .nav
         li.nav-item
           a.nav-link.active(href="/") Home
-        li.nav-item
-          a.nav-link.active(href="/about") About
         if loggedIn
-          if status=='teacher'
-            li.nav-item 
-              a.nav-link.active(href="/users") Users
-          li.nav-item
-            a.nav-link.active(href="/profile") Profile
           li.nav-item
             a.nav-link.active(href="/logout") Logout
         else
