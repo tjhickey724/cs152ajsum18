@@ -1,0 +1,13 @@
+extends layoutBS
+
+block content
+  .jumbotron
+    h1 Star Wars 
+    p May the force be with you!
+
+    p There are #{data.count} Star Wars films
+
+    ol
+      each f,i in data.results
+        li
+          a(href="/starwars/films/"+(i+1)) #{f.title}

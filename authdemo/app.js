@@ -8,6 +8,10 @@ const session = require("express-session")
 const passport = require('passport')
 const configPassport = require('./config/passport')
 
+
+const swController = require('./controllers/swController')
+const indexController = require('./controllers/indexController')
+
 // add the mongoose package and initialized
 // this is need to keep track of the users ...
 mongoose.connect( 'mongodb://localhost/skillmastery' );
@@ -51,8 +55,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 // and then will send the browser back to /logic/authorized page
 
 app.use((req,res,next) => {
-  console.log("middleware to set loggedIn is being run")
-  console.log(req.user)
+  //console.log("middleware to set loggedIn is being run")
+  //console.log(req.user)
   res.locals.loggedIn = false
   if (req.isAuthenticated()){
     console.log("user has been Authenticated")
@@ -119,12 +123,16 @@ app.get('/logout', function(req, res) {
 
 
 
-app.get('/', function(req, res, next) {
-  res.render('index', { title: 'AuthDemo' });
-});
+app.get('/', indexController.renderMain)
 
 
+app.get('/starwars',
+            swController.attachFilms,
+            swController.renderMain)
 
+app.get('/starwars/films/:filmNum',
+            swController.attachFilms,
+            swController.renderFilm)
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
