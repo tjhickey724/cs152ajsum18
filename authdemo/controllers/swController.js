@@ -10,7 +10,7 @@ exports.renderFilm =  (req,res) => {
   //console.log("in the swController.renderMain")
   const n = parseInt(req.params.filmNum)
   const film = res.locals.data.results[n]
-  res.render('starwarsFilm',{film:film})
+  res.render('starwarsFilm',{film:film,n:n})
 }
 
 exports.attachFilms = (req,res,next) => {
