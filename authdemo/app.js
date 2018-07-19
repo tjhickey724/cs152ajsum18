@@ -11,10 +11,12 @@ const configPassport = require('./config/passport')
 
 const swController = require('./controllers/swController')
 const indexController = require('./controllers/indexController')
+const helloDFController = require('./controllers/helloDFController')
+const helloDFControllerv2 = require('./controllers/helloDFControllerv2')
 
 // add the mongoose package and initialized
 // this is need to keep track of the users ...
-mongoose.connect( 'mongodb://localhost/skillmastery' );
+mongoose.connect( 'mongodb://localhost/authdemo' );
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
@@ -75,6 +77,17 @@ app.use((req,res,next) => {
   next()
 })
 
+console.log(`helloDFControllerv2.respondToDF=${helloDFControllerv2.respondToDF}`)
+
+app.post('/hook3',(req,res,next)=> {
+  console.log('in app.post for /hook')
+  console.dir(req)
+  console.log(`req.body.result.parameters=${req.body.result.parameters}`)
+  next()
+})
+app.post('/hook2',helloDFControllerv2.respondToDF)
+
+app.post('/hook',helloDFController.respondToDF)
 
 app.get('/auth/google',
     passport.authenticate('google',
@@ -123,7 +136,9 @@ app.get('/logout', function(req, res) {
 
 
 
+
 app.get('/', indexController.renderMain)
+
 
 
 app.get('/starwars',
