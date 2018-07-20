@@ -44,7 +44,7 @@ exports.attachSkills = ( req, res, next ) => {
 
 
 exports.saveSkill = ( req, res ) => {
-  //console.log("in saveSkill!")
+  console.log("in saveSkill!")
   //console.dir(req)
   let newSkill = new Skill( {
     name: req.body.name,

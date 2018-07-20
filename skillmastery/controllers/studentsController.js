@@ -9,6 +9,7 @@ exports.getAllStudents = ( req, res ) => {
   Student.find( {} )
     .exec()
     .then( ( studentData ) => {
+      console.log("in getAllStudents")
       console.dir(studentData)
       console.log(studentData.count)
       res.render( 'students', {

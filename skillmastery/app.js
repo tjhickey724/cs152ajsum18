@@ -131,9 +131,9 @@ function isLoggedIn(req, res, next) {
 
 // we require them to be logged in to see their profile
 app.get('/profile', isLoggedIn, function(req, res) {
-        res.render('profile', {
+        res.render('profile')/*, {
             user : req.user // get the user out of session and pass to template
-        });
+        });*/
     });
 
 // here are our regular app routes ...
@@ -142,14 +142,14 @@ app.get('/skills', skillsController.getAllSkills );
 app.post('/saveSkill', isLoggedIn, skillsController.saveSkill );
 app.post('/deleteSkill', isLoggedIn, skillsController.deleteSkill );
 
+//app.get('/evidenceItem/:id',evidenceController.getEvidenceItem );
 app.get('/evidenceItem/:id',
-         evidenceController.getEvidenceItem );
-
+          evidenceController.getEvidenceItem );
+          
 app.get('/evidence',
          skillsController.attachSkills,
          evidenceController.getAllEvidence );
-app.get('/evidenceItem/:id',
-          evidenceController.getEvidenceItem );
+
 app.post('/saveEvidence', isLoggedIn, evidenceController.saveEvidence );
 app.post('/deleteEvidence', isLoggedIn, evidenceController.deleteEvidence );
 

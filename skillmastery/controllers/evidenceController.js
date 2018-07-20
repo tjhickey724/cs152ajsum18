@@ -10,6 +10,7 @@ exports.getAllEvidence = ( req, res ) => {
   Evidence.find( {student:req.user.googleemail} )
     .exec()
     .then( ( evidence ) => {
+      console.dir(evidence)
       res.render( 'evidence', {
         evidence: evidence,
         user:req.user,
@@ -48,6 +49,7 @@ exports.getEvidenceItem = ( req, res, next ) => {
   Evidence.findOne(objId) //{"_id": objId})
     .exec()
     .then( ( evidence ) => {
+      console.dir(evidence)
       res.render('evidenceItem',{e:evidence})
     } )
     .catch( ( error ) => {
@@ -65,6 +67,7 @@ exports.getEvidenceItem = ( req, res, next ) => {
 exports.saveEvidence = ( req, res ) => {
   //console.log("in saveSkill!")
   //console.dir(req)
+  onsole.log('in saveEvidence')
   let newEvidence = new Evidence( {
     student: req.body.student,
     skill: req.body.skill,

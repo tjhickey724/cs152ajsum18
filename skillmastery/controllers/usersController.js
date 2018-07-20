@@ -24,6 +24,7 @@ exports.getAllUsers = ( req, res ) => {
 };
 
 exports.getUser = ( req, res ) => {
+  console.log("in getUser")
   const objId = new mongo.ObjectId(req.params.id)
   User.findOne(objId) //{"_id": objId})
     .exec()
@@ -42,7 +43,7 @@ exports.getUser = ( req, res ) => {
 };
 
 exports.attachUser = ( req, res, next ) => {
-  console.log('in attachEvidence')
+  console.log('in attachUser')
   const objId = new mongo.ObjectId(req.params.id)
   User.findOne(objId) //{"_id": objId})
     .exec()
