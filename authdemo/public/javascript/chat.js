@@ -10,10 +10,15 @@ console.dir(socket)
 socket.on('chat message', function(msg){
      $('#chatarea').append($('<li>').text(msg));
    });
-   
+
+socket.on('numusers',function(msg){
+  usernames.html(msg)
+})
+
 
 
 console.log('inside chat.js')
+
 const chatinput = document.getElementById('chatinput')
 
 chatinput.addEventListener('keypress',function(event){
@@ -29,4 +34,14 @@ chatinput.addEventListener('keypress',function(event){
 
     chatinput.value = ""
   }
+})
+
+const userbutton = $("#showusers")
+const usernames = $("#usernames")
+
+userbutton.click(function(event){
+  console.log("user clicked on the button!")
+  usernames.html("they clicked!")
+  socket.emit("nombres de users","")
+
 })
