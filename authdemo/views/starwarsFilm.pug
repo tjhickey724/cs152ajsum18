@@ -1,0 +1,19 @@
+extends layoutBS
+
+block content
+  .jumbotron
+    h1 #{film.title}
+    p May the force be with you!
+    table.table.table-bordered.table-striped
+      tbody
+        tr
+          td Director
+          td #{film.director}
+        tr
+          td Producer
+          td #{film.producer}
+        tr
+          td Released
+          td #{film.release_date}
+    a(href=film.url)
+          | link to swapi site

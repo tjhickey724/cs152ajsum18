@@ -1,8 +1,9 @@
 extends layoutBS
+block head
 
 block content
   .jumbotron
-    h1 Star Wars 
+    h1 Star Wars
     p May the force be with you!
 
     p There are #{data.count} Star Wars films
@@ -11,3 +12,16 @@ block content
       each f,i in data.results
         li
           a(href="/starwars/films/"+i) #{f.title}
+
+    hr
+    h2 Pick a film number and get some info
+    select#pickfilm
+      each x in [1,2,3,4,5,6,7]
+        option #{x}
+
+    hr
+    h2 Info about the film
+    #info
+    hr
+
+    script(src='/javascript/starwars.js')

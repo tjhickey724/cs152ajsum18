@@ -1,0 +1,23 @@
+extends layoutBS
+block head
+  script(src="/socket.io/socket.io.js")
+block content
+  .jumbotron
+    h1 Welcome to the ChatPage
+    p This apps shows how to use jQuery and Socket.io to chat
+    if loggedIn
+      p You are logged in
+      h2 Welcome
+        label#userName
+          | #{user.googlename}
+      a(href="/logout") Logout
+      hr
+      ul#chatarea
+      br
+      input#chatinput(width="100%")
+
+    else
+      p You are not logged in
+      a(href="/auth/google") Login
+
+    script(src='javascript/chat.js')

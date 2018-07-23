@@ -2,11 +2,12 @@ extends layoutBS
 
 block content
   .jumbotron
-    h1 Welcome to authDemo
+    h1 Welcome to authDemo 
     p This apps shows how to authenticate
-  if loggedIn
-    p You are logged in
+  | user=#{user}
+  if loggedIn 
+    p You are logged in 
     a(href="/logout") Logout
-  else
+  else 
     p You are not logged in
-    a(href="/auth/google") Login
+    a(href="/auth/google") Login 

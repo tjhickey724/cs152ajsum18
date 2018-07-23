@@ -14,6 +14,8 @@ const indexController = require('./controllers/indexController')
 const helloDFController = require('./controllers/helloDFController')
 const helloDFControllerv2 = require('./controllers/helloDFControllerv2')
 
+
+
 // add the mongoose package and initialized
 // this is need to keep track of the users ...
 mongoose.connect( 'mongodb://localhost/authdemo' );
@@ -31,6 +33,9 @@ configPassport(passport)
 
 
 var app = express()
+
+
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'))
@@ -137,17 +142,34 @@ app.get('/logout', function(req, res) {
 
 
 
+
 app.get('/', indexController.renderMain)
 
-
+app.use('/chat',
+      function(req,res){
+          console.log("in side chat controller")
+          console.dir(res.locals)
+          res.render('chat',{})
+})
 
 app.get('/starwars',
             swController.attachFilms,
             swController.renderMain)
 
+
+
+
 app.get('/starwars/films/:filmNum',
             swController.attachFilms,
             swController.renderFilm)
+
+app.get('/starwars/films/:filmNum/json',
+            swController.attachFilms,
+            swController.getFilm)
+
+
+
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

@@ -29,6 +29,12 @@ server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 
+var ioController = require('../controllers/socketioController.js')
+var io = ioController.startSocketio(server)
+ioController.initSocketio(io)
+
+
+
 /**
  * Normalize a port into a number, string, or false.
  */
