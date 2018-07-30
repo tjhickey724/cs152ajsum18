@@ -1,5 +1,5 @@
 'use strict';
-const User = require( '../models/user' );
+const User = require( '../models/User' );
 const mongo = require('mongodb');
 console.log("loading the users Controller")
 

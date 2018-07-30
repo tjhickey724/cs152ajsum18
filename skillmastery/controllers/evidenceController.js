@@ -1,5 +1,5 @@
 'use strict';
-const Evidence = require( '../models/evidence' );
+const Evidence = require( '../models/Evidence' );
 var mongo = require('mongodb');
 console.log("loading the Evidence Controller")
 
