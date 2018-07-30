@@ -2,20 +2,10 @@ extends layoutBS
 
 block content
 
-  h1 Evidence Review
-  | for #{e.skill}
+  h1 Evidence  for #{e.skill} by #{e.student}
   br
-  | by #{e.student}
-  br
-  | Link:
-  a(href=e.url) #{e.url}
+  h3 Evidence
+  | #{e.evidence}
   hr
   h3 Student explanation of evidence
   | #{e.description}
-  hr
-  | Enter your Review of their evidence:
-  | this part needs to be written!
-  br
-  textarea(rows="10" cols="80")
-  hr
-  button.btn.btn-large.btn-danger Submit Review

@@ -1,24 +1,33 @@
 extends layoutBS
 
 block content
-
-  h1 welcome #{user.googlename}
-  h2 Add some evidence
+  .jumbotron.offwhite
+    h1 Evidence of Mastery Page for #{user.googlename}
+    p Use this page to select a skill, add evidence of mastery, and justify it
 
   form(method="post" action="saveEvidence")
     .formGroup
       label student name
       input(type="text" name="student" readonly="true" value=user.googleemail)
     .formGroup
-      label skill
-      select(name="skill")
-        each s in skills
-          option #{s.name}
+      h2 Skill Selection
+      p Select the skill you have mastered:
+        select#skill(name="skill")
+          option Select a skill
+          each s in skills
+            option #{s.name}
+    hr
+    #skillDesc
+    hr
     .formGroup
-      label link to evidence
-      input(type="text" name="url")
+      h2 Evidence
+      p Cut/paste evidence of your mastery of the skill below
+      br
+      textarea(name="evidence" rows="10" cols="80")
+    hr
     .formGroup
-      label description of how this link demonstrates the skill
+      h2 Explanation
+      p explain what your evidence is and how it demonstrates mastery of the skill
       br
       textarea(name="description" rows="10" cols="80")
     hr
@@ -29,10 +38,8 @@ block content
     ol
       each e in evidence
         li
+          a(href="/evidenceItem/"+e._id)  #{e.student}/#{e.skill}
           input(name="evidenceID" value=e._id type="checkbox")
-          e #{e.student} --
-          e #{e.skill}
-          a(href=e.url) Link is #{e.url}
-          i #{e.description}
     input(type="submit" value="Delete checked items")
     hr
+    script(src="javascripts/evidence.js")

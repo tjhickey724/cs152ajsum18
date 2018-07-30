@@ -66,12 +66,12 @@ exports.getEvidenceItem = ( req, res, next ) => {
 
 exports.saveEvidence = ( req, res ) => {
   //console.log("in saveSkill!")
-  //console.dir(req)
-  onsole.log('in saveEvidence')
+  //console.dir(q)
+  console.log('in saveEvidence')
   let newEvidence = new Evidence( {
     student: req.body.student,
     skill: req.body.skill,
-    url: req.body.url,
+    evidence: req.body.evidence,
     description: req.body.description,
   } )
 

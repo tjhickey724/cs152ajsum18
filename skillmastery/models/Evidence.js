@@ -4,7 +4,7 @@ const mongoose = require( 'mongoose' );
 var evidenceSchema = mongoose.Schema( {
   student: String,
   skill: String,
-  url: String,
+  evidence: String,
   description: String
 } );
 

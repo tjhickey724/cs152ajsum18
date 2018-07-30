@@ -13,6 +13,8 @@ const
  User = require( './models/user' ),
  flash = require('connect-flash')
 
+const Skill = require( './models/skill' );
+
 
  var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
@@ -122,6 +124,7 @@ function isLoggedIn(req, res, next) {
     res.locals.loggedIn = false
     if (req.isAuthenticated()){
       console.log("user has been Authenticated")
+      res.locals.loggedIn = true
       return next();
     } else {
       console.log("user has not been authenticated...")
@@ -141,11 +144,21 @@ app.get('/profile', isLoggedIn, function(req, res) {
 app.get('/skills', skillsController.getAllSkills );
 app.post('/saveSkill', isLoggedIn, skillsController.saveSkill );
 app.post('/deleteSkill', isLoggedIn, skillsController.deleteSkill );
-
+app.post('/skill', (req,res)=> {
+  console.log('in /skill')
+  console.dir(req.body.skill)
+  Skill.findOne({name:req.body.skill})
+    .exec()
+    .then((skill) =>{
+      console.log("in Skill finder")
+      console.dir(skill)
+      res.json("Cut/Paste code which demonstrates<br>"+skill.description)
+    })
+})
 //app.get('/evidenceItem/:id',evidenceController.getEvidenceItem );
 app.get('/evidenceItem/:id',
           evidenceController.getEvidenceItem );
-          
+
 app.get('/evidence',
          skillsController.attachSkills,
          evidenceController.getAllEvidence );
