@@ -10,10 +10,10 @@ const
  usersController = require('./controllers/usersController'),
  session = require("express-session"),
  bodyParser = require("body-parser"),
- User = require( './models/user' ),
+ User = require( './models/User' ),
  flash = require('connect-flash')
 
-const Skill = require( './models/skill' );
+const Skill = require( './models/Skill' );
 
 
  var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
