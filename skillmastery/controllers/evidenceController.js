@@ -7,7 +7,13 @@ console.log("loading the Evidence Controller")
 // this displays all of the skills
 exports.getAllEvidence = ( req, res ) => {
   console.log('in getAllEvidence')
-  Evidence.find( {student:req.user.googleemail} )
+  console.dir(req.user)
+  console.log(req.user.googleemail != 'tjhickey@brandeis.edu')
+  let selector = {}
+  if (req.user.googleemail != 'tjhickey@brandeis.edu'){
+    selector = {student:req.user.googleemail}
+  }
+  Evidence.find( selector )
     .exec()
     .then( ( evidence ) => {
       console.dir(evidence)
